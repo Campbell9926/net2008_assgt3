@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify, make_response
 
 app = Flask(__name__)
 
@@ -9,9 +9,17 @@ def home():
 
 @app.route('/interfaces')
 def interfaces():
-    d["int_name"] = "ip-address"
-    res = make_response(jsonify(d), 200)
-    return res
+    d = {}
+    with open("interfaces.txt", "r") as file:
+        readlines = file.readlines()
+        for line in readlines:
+            words = line.split(" ")
+            for word in words:
+                if word.startswith("addr"):
+                    word = word.split(":")
+                    d[words[0]] = word[1]
+                    break
+    return d
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
