@@ -25,5 +25,14 @@ def interfaces():
 
     return dd
 
+@app.route('/iproutes')
+def iproutes():
+    try:
+        file.open("iproutes.txt")
+        readlines = file.readlines()
+    except:
+        return("cannot open file")
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
